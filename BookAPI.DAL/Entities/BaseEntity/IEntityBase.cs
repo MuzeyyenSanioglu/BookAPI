@@ -10,7 +10,7 @@ namespace BookAPI.DAL.Entities.BaseEntity
 {
     public interface IEntityBase
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        
         int  Id { get; set; }
         bool IsDeleted { get; set; }
         DateTime CreatedDate { get; set; }

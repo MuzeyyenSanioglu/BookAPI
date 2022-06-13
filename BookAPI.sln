@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookAPI", "BookAPI\BookAPI.csproj", "{3122A7AD-7555-4161-8302-AF044EBE7146}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookAPI", "BookAPI\BookAPI.csproj", "{3122A7AD-7555-4161-8302-AF044EBE7146}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookAPI.DAL", "BookAPI.DAL\BookAPI.DAL.csproj", "{8FADA062-8081-44BA-82A3-23901BD11D50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookAPI.DAL", "BookAPI.DAL\BookAPI.DAL.csproj", "{8FADA062-8081-44BA-82A3-23901BD11D50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookAPI.BLL", "BookAPI.BLL\BookAPI.BLL.csproj", "{8F2484A9-03D4-431E-AA27-D9CD4D652B97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookAPI.BLL", "BookAPI.BLL\BookAPI.BLL.csproj", "{8F2484A9-03D4-431E-AA27-D9CD4D652B97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookAPI.Infrastructure", "BookAPI.Infrastructure\BookAPI.Infrastructure.csproj", "{A87E89AA-D447-42D0-9AE9-2362D2F0CFA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{8F2484A9-03D4-431E-AA27-D9CD4D652B97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F2484A9-03D4-431E-AA27-D9CD4D652B97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F2484A9-03D4-431E-AA27-D9CD4D652B97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A87E89AA-D447-42D0-9AE9-2362D2F0CFA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A87E89AA-D447-42D0-9AE9-2362D2F0CFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A87E89AA-D447-42D0-9AE9-2362D2F0CFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A87E89AA-D447-42D0-9AE9-2362D2F0CFA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

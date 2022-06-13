@@ -9,9 +9,10 @@ namespace BookAPI.DAL.Repository.Interfaces
 {
     public interface IRepository<T>
     {
-        void Add(T enitity);
-        void Update(T enitity);
-        void Delete(T enitity);
+        T Add(T enitity);
+        T Update(T enitity);
+        T Delete(T enitity);
+        T DeleteSoft(T entity);
         List<T> GetAll();
     }
 }
