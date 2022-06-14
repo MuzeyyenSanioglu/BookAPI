@@ -1,5 +1,5 @@
 using BookAPI.BLL;
-using BookAPI.DAL;
+using BookAPI.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddBussiness();
-builder.Services.AddDAL(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

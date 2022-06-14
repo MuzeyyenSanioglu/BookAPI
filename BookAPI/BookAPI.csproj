@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BookAPI.BLL\BookAPI.BLL.csproj" />
+    <ProjectReference Include="..\BookAPI.Infrastructure\BookAPI.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -10,9 +10,10 @@ namespace BookAPI.BLL.Services.Interface
 {
     public interface IBookService
     {
-        APIResponse<bool> Create(BooksDto book);
-        APIResponse<bool> Update(BooksDto book);
-        APIResponse<bool> Delete(BooksDto book);
+        APIResponse<BooksDto> Create(BooksDto book);
+        APIResponse<BooksDto> Update(BooksDto book);
+        APIResponse<bool> Delete(string book);
+        APIResponse<bool> DeleteSoft(string book);
         APIResponse<List<BooksDto>> GetAll();
         APIResponse<BooksDto> GetById(int id);
         APIResponse<BooksDto> GetByUUID(string UUID);

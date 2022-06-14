@@ -16,11 +16,19 @@ namespace BookAPI.Infrastructure.Repositories
         {
         }
 
+        public List<Book> GetaAllBookByKeyword(List<string> keywords)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<dynamic> GetBooksGroupAndCountByCategory()
         {
             throw new NotImplementedException();
         }
 
-        
+        public Book GetByUUId(string uuid)
+        {
+           return _dbContext.Set<Book>().FirstOrDefault(s => s.UUID == uuid);
+        }
     }
 }

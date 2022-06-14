@@ -11,5 +11,7 @@ namespace BookAPI.DAL.Repository
     public interface IBookrepository : IRepository<Book>
     {
         public List<dynamic> GetBooksGroupAndCountByCategory();
+        public List<Book> GetaAllBookByKeyword(List<string> keywords);
+        public Book GetByUUId(string uuid);
     }
 }
