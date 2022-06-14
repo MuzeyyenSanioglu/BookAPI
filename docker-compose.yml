@@ -1,0 +1,33 @@
+version: '3.4'
+
+services:
+  booksqldb:
+    image: mcr.microsoft.com/mssql/server
+  bookapi:
+    image: ${DOCKER_REGISTRY-}bookapi
+    build:
+      context: .
+      dockerfile: BookAPI\Dockerfile
+
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.2.2
+    container_name: elasticsearch
+    ports:
+      - 9200:9200
+    networks:
+       docker-elk:
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.2.2
+    container_name: kibana
+    environment:
+       - "ELASTICSEARCH_URL=http://elasticsearch:9200"
+    networks:
+       - docker-elk
+    depends_on:
+       - elasticsearch
+networks:
+  docker-elk:
+    driver: bridge
+
