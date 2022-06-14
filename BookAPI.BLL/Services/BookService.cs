@@ -4,6 +4,7 @@ using BookAPI.BLL.DTOs;
 using BookAPI.BLL.Services.Interface;
 using BookAPI.DAL.Entities;
 using BookAPI.DAL.Repository;
+using Newtonsoft.Json.Linq;
 
 namespace BookAPI.BLL.Services
 {
@@ -22,6 +23,8 @@ namespace BookAPI.BLL.Services
         {
             APIResponse<BooksDto> result = new APIResponse<BooksDto>();
             var entity = _mapper.Map<Book>(book);
+            if(string.IsNullOrEmpty(entity.UUID))
+                entity.UUID = Guid.NewGuid().ToString();
             entity.CreatedDate = DateTime.Now;
             entity.UpdatedDate = DateTime.Now;
             entity.IsDeleted = false;
@@ -91,6 +94,14 @@ namespace BookAPI.BLL.Services
             return result;
         }
 
-       
+        public APIResponse<List<JObject>> GetBooksGroupAndCountByCategory()
+        {
+            APIResponse<List<JObject>> result = new APIResponse<List<JObject>>();
+            List<JObject> datas = _bookRepository.GetBooksGroupAndCountByCategory();
+            result.SetData(datas);
+            return result;
+        }
+
+
     }
 }

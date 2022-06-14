@@ -2,6 +2,7 @@
 using BookAPI.DAL.Repository;
 using BookAPI.Domain.Data;
 using BookAPI.Infrastructure.Repositories.Base;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,21 @@ namespace BookAPI.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public List<dynamic> GetBooksGroupAndCountByCategory()
+        public List<JObject> GetBooksGroupAndCountByCategory()
         {
-            throw new NotImplementedException();
+
+           List<JObject> results =  new List<JObject>();
+            var groupByCategory = _dbContext.Set<Book>()
+                .GroupBy(s => s.Categories)
+                .Select(category => new { Category = category.Key, BookCount = category.Count()});
+            foreach (var item in groupByCategory)
+            {
+                dynamic categoryObject = new JObject();
+                categoryObject.Category = item.Category;
+                categoryObject.BookCount = item.BookCount;
+                results.Add(categoryObject);
+            }
+            return results;
         }
 
         public Book GetByUUId(string uuid)

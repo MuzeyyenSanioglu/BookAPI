@@ -1,5 +1,6 @@
 ﻿using BookAPI.BLL.APIResponse;
 using BookAPI.BLL.DTOs;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,6 @@ namespace BookAPI.BLL.Services.Interface
         APIResponse<List<BooksDto>> GetAll();
         APIResponse<BooksDto> GetById(int id);
         APIResponse<BooksDto> GetByUUID(string UUID);
+        APIResponse<List<JObject>> GetBooksGroupAndCountByCategory();
     }
 }

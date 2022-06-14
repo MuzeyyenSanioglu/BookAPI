@@ -2,6 +2,7 @@
 using BookAPI.BLL.DTOs;
 using BookAPI.BLL.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace BookAPI.Controllers
 {
@@ -39,5 +40,11 @@ namespace BookAPI.Controllers
         {
             return _bookService.DeleteSoft(uuid);
         }
+        [HttpGet]
+        public APIResponse<List<JObject>> GetBooksGroupAndCountByCategory()
+        {
+            return _bookService.GetBooksGroupAndCountByCategory();
+        }
+
     }
 }
