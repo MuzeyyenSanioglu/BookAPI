@@ -7,27 +7,31 @@ services:
     image: ${DOCKER_REGISTRY-}bookapi
     build:
       context: .
-      dockerfile: BookAPI\Dockerfile
-
+      dockerfile: BookAPI/Dockerfile
 
   elasticsearch:
+    container_name: elastic-container
     image: docker.elastic.co/elasticsearch/elasticsearch:8.2.2
-    container_name: elasticsearch
+    environment:
+      - xpack.security.enabled=false
+      - "discovery.type=single-node"
+    networks:
+      - ek-net
     ports:
       - 9200:9200
-    networks:
-       docker-elk:
-
   kibana:
+    container_name: kibana-container
     image: docker.elastic.co/kibana/kibana:8.2.2
-    container_name: kibana
     environment:
-       - "ELASTICSEARCH_URL=http://elasticsearch:9200"
+      - ELASTICSEARCH_HOSTS=http://elastic-container:9200
     networks:
-       - docker-elk
+      - ek-net
     depends_on:
-       - elasticsearch
+      - elasticsearch
+    ports:
+      - 5601:5601
 networks:
-  docker-elk:
+  ek-net:
     driver: bridge
+    
 

@@ -1,18 +1,18 @@
 version: '3.4'
 
 services:
+  
   bookapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:443;http://+:80
       - "ConnectionStrings:BookConnection=Server=booksqldb;Database=Books;User Id=sa;Password=Lf12345!"
-    depends_on:
-      - booksqldb
     ports:
       - "80"
       - "443"
     volumes:
-      - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
-      - ${HOME}/.aspnet/https:/root/.aspnet/https/
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
   booksqldb:
     container_name: booksqldb
     ports:
