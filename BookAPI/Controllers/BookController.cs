@@ -1,6 +1,7 @@
 ﻿using BookAPI.BLL.APIResponse;
 using BookAPI.BLL.DTOs;
 using BookAPI.BLL.Services.Interface;
+using Fleskup.WebApi.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
@@ -41,9 +42,18 @@ namespace BookAPI.Controllers
             return _bookService.DeleteSoft(uuid);
         }
         [HttpGet]
-        public APIResponse<List<JObject>> GetBooksGroupAndCountByCategory()
+        public APIResponse<List<GroupCategoryDto>> GetBooksGroupAndCountByCategory()
         {
-            return _bookService.GetBooksGroupAndCountByCategory();
+            APIResponse<List<GroupCategoryDto>> result = new APIResponse<List<GroupCategoryDto>>();
+            var categoryResult = _bookService.GetBooksGroupAndCountByCategory();
+            if (!categoryResult.IsSuccessful)
+            {
+                result.SetFailureStatus(categoryResult.StatusCode, categoryResult.StatusMessage);
+                return result;
+            }
+
+            result.SetData(categoryResult.Data);
+            return result;
         }
 
     }

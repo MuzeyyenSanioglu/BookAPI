@@ -11,6 +11,7 @@ namespace BookAPI.BLL
     {
         public static IServiceCollection AddBussiness(this IServiceCollection services)
         {
+            services.AddTransient <IBookElkServices,BookElkServices>();
             services.AddTransient<IBookService, BookService>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             #region Cofigure Mapper

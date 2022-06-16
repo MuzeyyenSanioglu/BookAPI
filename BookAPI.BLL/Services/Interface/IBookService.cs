@@ -18,6 +18,6 @@ namespace BookAPI.BLL.Services.Interface
         APIResponse<List<BooksDto>> GetAll();
         APIResponse<BooksDto> GetById(int id);
         APIResponse<BooksDto> GetByUUID(string UUID);
-        APIResponse<List<JObject>> GetBooksGroupAndCountByCategory();
+        APIResponse<List<GroupCategoryDto>> GetBooksGroupAndCountByCategory();
     }
 }

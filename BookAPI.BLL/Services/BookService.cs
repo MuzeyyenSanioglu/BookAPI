@@ -94,11 +94,19 @@ namespace BookAPI.BLL.Services
             return result;
         }
 
-        public APIResponse<List<JObject>> GetBooksGroupAndCountByCategory()
+        public APIResponse<List<GroupCategoryDto>> GetBooksGroupAndCountByCategory()
         {
-            APIResponse<List<JObject>> result = new APIResponse<List<JObject>>();
+            APIResponse<List<GroupCategoryDto>> result = new APIResponse<List<GroupCategoryDto>>();
             List<JObject> datas = _bookRepository.GetBooksGroupAndCountByCategory();
-            result.SetData(datas);
+            List<GroupCategoryDto> groupCategoryDto = new List<GroupCategoryDto>();
+            foreach (var data in datas)
+            {
+                GroupCategoryDto dto = new GroupCategoryDto();
+                dto.CategoryName = data["Category"].ToString();
+                dto.Count = int.Parse( data["BookCount"].ToString()); 
+                groupCategoryDto.Add(dto);
+            }
+            result.SetData(groupCategoryDto);
             return result;
         }
 

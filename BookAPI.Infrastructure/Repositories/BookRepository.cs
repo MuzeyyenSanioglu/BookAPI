@@ -24,19 +24,19 @@ namespace BookAPI.Infrastructure.Repositories
 
         public List<JObject> GetBooksGroupAndCountByCategory()
         {
-
-           List<JObject> results =  new List<JObject>();
             var groupByCategory = _dbContext.Set<Book>()
                 .GroupBy(s => s.Categories)
                 .Select(category => new { Category = category.Key, BookCount = category.Count()});
+            List <JObject> result = new List<JObject>();
             foreach (var item in groupByCategory)
             {
                 dynamic categoryObject = new JObject();
                 categoryObject.Category = item.Category;
                 categoryObject.BookCount = item.BookCount;
-                results.Add(categoryObject);
+                result.Add(categoryObject);
             }
-            return results;
+            
+            return result;
         }
 
         public Book GetByUUId(string uuid)
