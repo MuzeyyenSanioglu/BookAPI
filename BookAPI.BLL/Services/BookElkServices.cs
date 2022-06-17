@@ -31,7 +31,7 @@ namespace BookAPI.BLL.Services
             ElasticClient elasticClient = Auth().Data;
             if (!elasticClient.Indices.Exists("esearchitems").Exists)
                 elasticClient.Indices.Create("esearchitems", index => index.Map<BooksDto>(x => x.AutoMap()));
-        
+
             BulkResponse response = elasticClient.Bulk(b => b.Index("esearchitems").IndexMany(datas));
             result.SetData(response);
             return result;
@@ -39,33 +39,75 @@ namespace BookAPI.BLL.Services
 
         public APIResponse<IndexResponse> InsertIndex(BooksDto data)
         {
-           APIResponse<IndexResponse> result = new APIResponse<IndexResponse>();
-           ElasticClient elasticClient = Auth().Data;
-           if (!elasticClient.Indices.Exists("esearchitems").Exists)
-               elasticClient.Indices.Create("esearchitems", index => index.Map<BooksDto>(x => x.AutoMap()));
-           IndexResponse response = elasticClient.IndexDocument(data);
-           result.SetData(response);
-           return result;
+            APIResponse<IndexResponse> result = new APIResponse<IndexResponse>();
+            ElasticClient elasticClient = Auth().Data;
+            if (!elasticClient.Indices.Exists("esearchitems").Exists)
+                elasticClient.Indices.Create("esearchitems", index => index.Map<BooksDto>(x => x.AutoMap()));
+            IndexResponse response = elasticClient.IndexDocument(data);
+            result.SetData(response);
+            return result;
         }
 
         public APIResponse<List<BooksDto>> Search(List<string> keywords)
         {
             APIResponse<List<BooksDto>> result = new APIResponse<List<BooksDto>>();
-            ElasticClient elasticClient= Auth().Data;
+           
             List<BooksDto> books = new List<BooksDto>();
             foreach (string keyword in keywords)
             {
-                var searchResponse = elasticClient.Search<BooksDto>( s=>
-                s.Index("esearchitems").From(0).Query( p=>
-                   p.Match(m=>
-                     m.Field(f => f.ContentDescription)
-                     .Field(f => f.Title)
-                     .Query(keyword))));
+                ElasticClient elasticClient = Auth().Data;
+                var searchResponse = SearchDataIELK(keyword);
                 if (searchResponse.Documents.Count() > 0)
-                    books.AddRange(searchResponse.Documents);
+                {
+                    books = AddKeywordsDatas(searchResponse, books);
+                    continue;
+                }
+
             }
-            result.SetData(books);
+            var dataUUID = books.GroupBy(s => s.UUID).Select( g =>new { UUID = g.Key, Count = g.Count() }).Where(s => s.Count >= 3).ToList();
+            List<BooksDto> resultData = new List<BooksDto>();
+            foreach (var item in dataUUID)
+            {
+                if (resultData.Any(s => s.UUID == item.UUID))
+                    continue;
+                BooksDto book = books.Where(s => s.UUID == item.UUID).FirstOrDefault();
+                if (book != null)
+                 resultData.Add(book);
+            }
+            result.SetData(resultData);
             return result;
+        }   
+
+        #region Utility
+
+        public List<BooksDto> AddKeywordsDatas(ISearchResponse<BooksDto> searchResponse, List<BooksDto> data)
+        {
+            List<BooksDto> bookData = new List<BooksDto>();
+            foreach (BooksDto news in searchResponse.Documents)
+            {
+                if (bookData.Any(s => s.UUID == news.UUID))
+                    continue;
+                bookData.Add(news);
+            }
+            data.AddRange(bookData);
+            return data;
         }
+        public ISearchResponse<BooksDto> SearchDataIELK(string keyword)
+        {
+            ElasticClient elasticClient = Auth().Data;
+
+            var searchResponse = elasticClient.Search<BooksDto>(s =>
+                    s.Index("esearchitems").From(0).Query(p => p
+                    .QueryString(s => s
+                    .AnalyzeWildcard()
+                    .Query("*" + keyword.ToLower() + "*")
+                    .MinimumShouldMatch("100%")
+                    .Fields(f => f.Fields(
+                        f1 => f1.ContentDescription,
+                        f2 => f2.Title
+                        )))));
+            return searchResponse;
+        }
+        #endregion
     }
 }
